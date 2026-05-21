@@ -14,6 +14,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppPropsRouteImport } from './routes/_app/props'
 import { Route as AppPicksRouteImport } from './routes/_app/picks'
 import { Route as AppParlayRouteImport } from './routes/_app/parlay'
+import { Route as AppMovementRouteImport } from './routes/_app/movement'
 import { Route as AppLinesRouteImport } from './routes/_app/lines'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 
@@ -41,6 +42,11 @@ const AppParlayRoute = AppParlayRouteImport.update({
   path: '/parlay',
   getParentRoute: () => AppRoute,
 } as any)
+const AppMovementRoute = AppMovementRouteImport.update({
+  id: '/movement',
+  path: '/movement',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppLinesRoute = AppLinesRouteImport.update({
   id: '/lines',
   path: '/lines',
@@ -56,6 +62,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof AppDashboardRoute
   '/lines': typeof AppLinesRoute
+  '/movement': typeof AppMovementRoute
   '/parlay': typeof AppParlayRoute
   '/picks': typeof AppPicksRoute
   '/props': typeof AppPropsRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof AppDashboardRoute
   '/lines': typeof AppLinesRoute
+  '/movement': typeof AppMovementRoute
   '/parlay': typeof AppParlayRoute
   '/picks': typeof AppPicksRoute
   '/props': typeof AppPropsRoute
@@ -74,21 +82,37 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/lines': typeof AppLinesRoute
+  '/_app/movement': typeof AppMovementRoute
   '/_app/parlay': typeof AppParlayRoute
   '/_app/picks': typeof AppPicksRoute
   '/_app/props': typeof AppPropsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/lines' | '/parlay' | '/picks' | '/props'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/lines'
+    | '/movement'
+    | '/parlay'
+    | '/picks'
+    | '/props'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/lines' | '/parlay' | '/picks' | '/props'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/lines'
+    | '/movement'
+    | '/parlay'
+    | '/picks'
+    | '/props'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/_app/dashboard'
     | '/_app/lines'
+    | '/_app/movement'
     | '/_app/parlay'
     | '/_app/picks'
     | '/_app/props'
@@ -136,6 +160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppParlayRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/movement': {
+      id: '/_app/movement'
+      path: '/movement'
+      fullPath: '/movement'
+      preLoaderRoute: typeof AppMovementRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/lines': {
       id: '/_app/lines'
       path: '/lines'
@@ -156,6 +187,7 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppLinesRoute: typeof AppLinesRoute
+  AppMovementRoute: typeof AppMovementRoute
   AppParlayRoute: typeof AppParlayRoute
   AppPicksRoute: typeof AppPicksRoute
   AppPropsRoute: typeof AppPropsRoute
@@ -164,6 +196,7 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppLinesRoute: AppLinesRoute,
+  AppMovementRoute: AppMovementRoute,
   AppParlayRoute: AppParlayRoute,
   AppPicksRoute: AppPicksRoute,
   AppPropsRoute: AppPropsRoute,
