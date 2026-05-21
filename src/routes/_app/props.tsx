@@ -89,7 +89,7 @@ function Props() {
   );
 }
 
-function Th({ children }: { children: React.ReactNode }) {
+function Th({ children }: { children?: React.ReactNode }) {
   return <th className="p-3 font-semibold">{children}</th>;
 }
 
