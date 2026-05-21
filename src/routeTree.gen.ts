@@ -13,6 +13,7 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppPropsRouteImport } from './routes/_app/props'
 import { Route as AppPicksRouteImport } from './routes/_app/picks'
+import { Route as AppLinesRouteImport } from './routes/_app/lines'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 
 const AppRoute = AppRouteImport.update({
@@ -34,6 +35,11 @@ const AppPicksRoute = AppPicksRouteImport.update({
   path: '/picks',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLinesRoute = AppLinesRouteImport.update({
+  id: '/lines',
+  path: '/lines',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -43,12 +49,14 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof AppDashboardRoute
+  '/lines': typeof AppLinesRoute
   '/picks': typeof AppPicksRoute
   '/props': typeof AppPropsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof AppDashboardRoute
+  '/lines': typeof AppLinesRoute
   '/picks': typeof AppPicksRoute
   '/props': typeof AppPropsRoute
 }
@@ -57,19 +65,21 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/lines': typeof AppLinesRoute
   '/_app/picks': typeof AppPicksRoute
   '/_app/props': typeof AppPropsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/picks' | '/props'
+  fullPaths: '/' | '/dashboard' | '/lines' | '/picks' | '/props'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/picks' | '/props'
+  to: '/' | '/dashboard' | '/lines' | '/picks' | '/props'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/_app/dashboard'
+    | '/_app/lines'
     | '/_app/picks'
     | '/_app/props'
   fileRoutesById: FileRoutesById
@@ -109,6 +119,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPicksRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/lines': {
+      id: '/_app/lines'
+      path: '/lines'
+      fullPath: '/lines'
+      preLoaderRoute: typeof AppLinesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
@@ -121,12 +138,14 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppLinesRoute: typeof AppLinesRoute
   AppPicksRoute: typeof AppPicksRoute
   AppPropsRoute: typeof AppPropsRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppLinesRoute: AppLinesRoute,
   AppPicksRoute: AppPicksRoute,
   AppPropsRoute: AppPropsRoute,
 }
@@ -140,3 +159,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
