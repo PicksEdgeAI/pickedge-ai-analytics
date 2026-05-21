@@ -23,6 +23,7 @@ import { Route as AppLeaderboardRouteImport } from './routes/_app/leaderboard'
 import { Route as AppInjuriesRouteImport } from './routes/_app/injuries'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppAiRouteImport } from './routes/_app/ai'
+import { Route as AppAdminRouteImport } from './routes/_app/admin'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -93,9 +94,15 @@ const AppAiRoute = AppAiRouteImport.update({
   path: '/ai',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AppAdminRoute
   '/ai': typeof AppAiRoute
   '/dashboard': typeof AppDashboardRoute
   '/injuries': typeof AppInjuriesRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AppAdminRoute
   '/ai': typeof AppAiRoute
   '/dashboard': typeof AppDashboardRoute
   '/injuries': typeof AppInjuriesRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
+  '/_app/admin': typeof AppAdminRoute
   '/_app/ai': typeof AppAiRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/injuries': typeof AppInjuriesRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/ai'
     | '/dashboard'
     | '/injuries'
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/ai'
     | '/dashboard'
     | '/injuries'
@@ -176,6 +187,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_app'
+    | '/_app/admin'
     | '/_app/ai'
     | '/_app/dashboard'
     | '/_app/injuries'
@@ -295,10 +307,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAiRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/admin': {
+      id: '/_app/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
   AppAiRoute: typeof AppAiRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppInjuriesRoute: typeof AppInjuriesRoute
@@ -314,6 +334,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
   AppAiRoute: AppAiRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppInjuriesRoute: AppInjuriesRoute,
@@ -337,3 +358,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
