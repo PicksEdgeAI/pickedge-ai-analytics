@@ -17,6 +17,7 @@ import { Route as AppParlayRouteImport } from './routes/_app/parlay'
 import { Route as AppMovementRouteImport } from './routes/_app/movement'
 import { Route as AppLinesRouteImport } from './routes/_app/lines'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppAiRouteImport } from './routes/_app/ai'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -57,9 +58,15 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAiRoute = AppAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai': typeof AppAiRoute
   '/dashboard': typeof AppDashboardRoute
   '/lines': typeof AppLinesRoute
   '/movement': typeof AppMovementRoute
@@ -69,6 +76,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai': typeof AppAiRoute
   '/dashboard': typeof AppDashboardRoute
   '/lines': typeof AppLinesRoute
   '/movement': typeof AppMovementRoute
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
+  '/_app/ai': typeof AppAiRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/lines': typeof AppLinesRoute
   '/_app/movement': typeof AppMovementRoute
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ai'
     | '/dashboard'
     | '/lines'
     | '/movement'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ai'
     | '/dashboard'
     | '/lines'
     | '/movement'
@@ -110,6 +121,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_app'
+    | '/_app/ai'
     | '/_app/dashboard'
     | '/_app/lines'
     | '/_app/movement'
@@ -181,10 +193,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/ai': {
+      id: '/_app/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof AppAiRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppAiRoute: typeof AppAiRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppLinesRoute: typeof AppLinesRoute
   AppMovementRoute: typeof AppMovementRoute
@@ -194,6 +214,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAiRoute: AppAiRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppLinesRoute: AppLinesRoute,
   AppMovementRoute: AppMovementRoute,
