@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppSavedRouteImport } from './routes/_app/saved'
 import { Route as AppResearchRouteImport } from './routes/_app/research'
 import { Route as AppPropsRouteImport } from './routes/_app/props'
 import { Route as AppPicksRouteImport } from './routes/_app/picks'
@@ -30,6 +31,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppSavedRoute = AppSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppResearchRoute = AppResearchRouteImport.update({
   id: '/research',
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/picks': typeof AppPicksRoute
   '/props': typeof AppPropsRoute
   '/research': typeof AppResearchRoute
+  '/saved': typeof AppSavedRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -107,6 +114,7 @@ export interface FileRoutesByTo {
   '/picks': typeof AppPicksRoute
   '/props': typeof AppPropsRoute
   '/research': typeof AppResearchRoute
+  '/saved': typeof AppSavedRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -122,6 +130,7 @@ export interface FileRoutesById {
   '/_app/picks': typeof AppPicksRoute
   '/_app/props': typeof AppPropsRoute
   '/_app/research': typeof AppResearchRoute
+  '/_app/saved': typeof AppSavedRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/picks'
     | '/props'
     | '/research'
+    | '/saved'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/picks'
     | '/props'
     | '/research'
+    | '/saved'
   id:
     | '__root__'
     | '/'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/_app/picks'
     | '/_app/props'
     | '/_app/research'
+    | '/_app/saved'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -186,6 +198,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_app/saved': {
+      id: '/_app/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof AppSavedRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_app/research': {
       id: '/_app/research'
@@ -271,6 +290,7 @@ interface AppRouteChildren {
   AppPicksRoute: typeof AppPicksRoute
   AppPropsRoute: typeof AppPropsRoute
   AppResearchRoute: typeof AppResearchRoute
+  AppSavedRoute: typeof AppSavedRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -284,6 +304,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppPicksRoute: AppPicksRoute,
   AppPropsRoute: AppPropsRoute,
   AppResearchRoute: AppResearchRoute,
+  AppSavedRoute: AppSavedRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
