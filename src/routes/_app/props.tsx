@@ -46,7 +46,7 @@ function Props() {
           <thead className="bg-secondary/40">
             <tr className="text-left text-[11px] uppercase tracking-wider text-muted-foreground">
               <Th>Player</Th><Th>Market</Th><Th>Line</Th><Th>O / U</Th><Th>Proj</Th>
-              <Th>L5</Th><Th>L10</Th><Th>L20</Th><Th>Trend</Th><Th>AI</Th><Th></Th>
+              <Th>L5</Th><Th>L10</Th><Th>L20</Th><Th>Trend</Th><Th>AI</Th><Th> </Th>
             </tr>
           </thead>
           <tbody>
