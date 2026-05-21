@@ -17,6 +17,7 @@ import { Route as AppPicksRouteImport } from './routes/_app/picks'
 import { Route as AppParlayRouteImport } from './routes/_app/parlay'
 import { Route as AppMovementRouteImport } from './routes/_app/movement'
 import { Route as AppLinesRouteImport } from './routes/_app/lines'
+import { Route as AppInjuriesRouteImport } from './routes/_app/injuries'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppAiRouteImport } from './routes/_app/ai'
 
@@ -59,6 +60,11 @@ const AppLinesRoute = AppLinesRouteImport.update({
   path: '/lines',
   getParentRoute: () => AppRoute,
 } as any)
+const AppInjuriesRoute = AppInjuriesRouteImport.update({
+  id: '/injuries',
+  path: '/injuries',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai': typeof AppAiRoute
   '/dashboard': typeof AppDashboardRoute
+  '/injuries': typeof AppInjuriesRoute
   '/lines': typeof AppLinesRoute
   '/movement': typeof AppMovementRoute
   '/parlay': typeof AppParlayRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AppAiRoute
   '/dashboard': typeof AppDashboardRoute
+  '/injuries': typeof AppInjuriesRoute
   '/lines': typeof AppLinesRoute
   '/movement': typeof AppMovementRoute
   '/parlay': typeof AppParlayRoute
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/_app/ai': typeof AppAiRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/injuries': typeof AppInjuriesRoute
   '/_app/lines': typeof AppLinesRoute
   '/_app/movement': typeof AppMovementRoute
   '/_app/parlay': typeof AppParlayRoute
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/dashboard'
+    | '/injuries'
     | '/lines'
     | '/movement'
     | '/parlay'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/dashboard'
+    | '/injuries'
     | '/lines'
     | '/movement'
     | '/parlay'
@@ -134,6 +145,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/_app/ai'
     | '/_app/dashboard'
+    | '/_app/injuries'
     | '/_app/lines'
     | '/_app/movement'
     | '/_app/parlay'
@@ -205,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLinesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/injuries': {
+      id: '/_app/injuries'
+      path: '/injuries'
+      fullPath: '/injuries'
+      preLoaderRoute: typeof AppInjuriesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
@@ -225,6 +244,7 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppAiRoute: typeof AppAiRoute
   AppDashboardRoute: typeof AppDashboardRoute
+  AppInjuriesRoute: typeof AppInjuriesRoute
   AppLinesRoute: typeof AppLinesRoute
   AppMovementRoute: typeof AppMovementRoute
   AppParlayRoute: typeof AppParlayRoute
@@ -236,6 +256,7 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppAiRoute: AppAiRoute,
   AppDashboardRoute: AppDashboardRoute,
+  AppInjuriesRoute: AppInjuriesRoute,
   AppLinesRoute: AppLinesRoute,
   AppMovementRoute: AppMovementRoute,
   AppParlayRoute: AppParlayRoute,
