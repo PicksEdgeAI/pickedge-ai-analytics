@@ -7,11 +7,12 @@ export const Route = createFileRoute("/_app/pricing")({
   component: Pricing,
 });
 
-const tiers = [
+type Tier = { name: string; price: number; desc: string; featured?: boolean; features: Record<string, boolean> };
+const tiers: Tier[] = [
   { name: "Free", price: 0, desc: "Get started", features: { "3 AI picks/day": true, "Basic dashboard": true, "Limited prop search": true, "Live odds movement": false, "Parlay builder": false, "Sharp alerts": false, "Best-bet dashboard": false } },
   { name: "Pro", price: 29, desc: "Most popular", featured: true, features: { "Unlimited AI picks": true, "Full prop research": true, "Live odds movement": true, "Parlay builder": true, "Email & in-app alerts": true, "Sharp alerts": false, "Best-bet dashboard": false } },
   { name: "VIP", price: 79, desc: "Built for sharps", features: { "Everything in Pro": true, "Sharp movement alerts": true, "Best-bet dashboard": true, "Advanced analytics": true, "Early access features": true, "Priority support": true, "Custom AI models": true } },
-] as const;
+];
 
 function Pricing() {
   return (
