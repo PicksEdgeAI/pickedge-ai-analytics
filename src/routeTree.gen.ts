@@ -14,6 +14,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppSavedRouteImport } from './routes/_app/saved'
 import { Route as AppResearchRouteImport } from './routes/_app/research'
 import { Route as AppPropsRouteImport } from './routes/_app/props'
+import { Route as AppPricingRouteImport } from './routes/_app/pricing'
 import { Route as AppPicksRouteImport } from './routes/_app/picks'
 import { Route as AppParlayRouteImport } from './routes/_app/parlay'
 import { Route as AppMovementRouteImport } from './routes/_app/movement'
@@ -45,6 +46,11 @@ const AppResearchRoute = AppResearchRouteImport.update({
 const AppPropsRoute = AppPropsRouteImport.update({
   id: '/props',
   path: '/props',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPricingRoute = AppPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => AppRoute,
 } as any)
 const AppPicksRoute = AppPicksRouteImport.update({
@@ -98,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/movement': typeof AppMovementRoute
   '/parlay': typeof AppParlayRoute
   '/picks': typeof AppPicksRoute
+  '/pricing': typeof AppPricingRoute
   '/props': typeof AppPropsRoute
   '/research': typeof AppResearchRoute
   '/saved': typeof AppSavedRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/movement': typeof AppMovementRoute
   '/parlay': typeof AppParlayRoute
   '/picks': typeof AppPicksRoute
+  '/pricing': typeof AppPricingRoute
   '/props': typeof AppPropsRoute
   '/research': typeof AppResearchRoute
   '/saved': typeof AppSavedRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/_app/movement': typeof AppMovementRoute
   '/_app/parlay': typeof AppParlayRoute
   '/_app/picks': typeof AppPicksRoute
+  '/_app/pricing': typeof AppPricingRoute
   '/_app/props': typeof AppPropsRoute
   '/_app/research': typeof AppResearchRoute
   '/_app/saved': typeof AppSavedRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/movement'
     | '/parlay'
     | '/picks'
+    | '/pricing'
     | '/props'
     | '/research'
     | '/saved'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/movement'
     | '/parlay'
     | '/picks'
+    | '/pricing'
     | '/props'
     | '/research'
     | '/saved'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/_app/movement'
     | '/_app/parlay'
     | '/_app/picks'
+    | '/_app/pricing'
     | '/_app/props'
     | '/_app/research'
     | '/_app/saved'
@@ -218,6 +230,13 @@ declare module '@tanstack/react-router' {
       path: '/props'
       fullPath: '/props'
       preLoaderRoute: typeof AppPropsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/pricing': {
+      id: '/_app/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof AppPricingRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/picks': {
@@ -288,6 +307,7 @@ interface AppRouteChildren {
   AppMovementRoute: typeof AppMovementRoute
   AppParlayRoute: typeof AppParlayRoute
   AppPicksRoute: typeof AppPicksRoute
+  AppPricingRoute: typeof AppPricingRoute
   AppPropsRoute: typeof AppPropsRoute
   AppResearchRoute: typeof AppResearchRoute
   AppSavedRoute: typeof AppSavedRoute
@@ -302,6 +322,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppMovementRoute: AppMovementRoute,
   AppParlayRoute: AppParlayRoute,
   AppPicksRoute: AppPicksRoute,
+  AppPricingRoute: AppPricingRoute,
   AppPropsRoute: AppPropsRoute,
   AppResearchRoute: AppResearchRoute,
   AppSavedRoute: AppSavedRoute,
