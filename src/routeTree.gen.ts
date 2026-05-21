@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppResearchRouteImport } from './routes/_app/research'
 import { Route as AppPropsRouteImport } from './routes/_app/props'
 import { Route as AppPicksRouteImport } from './routes/_app/picks'
 import { Route as AppParlayRouteImport } from './routes/_app/parlay'
@@ -27,6 +28,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppResearchRoute = AppResearchRouteImport.update({
+  id: '/research',
+  path: '/research',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppPropsRoute = AppPropsRouteImport.update({
   id: '/props',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/parlay': typeof AppParlayRoute
   '/picks': typeof AppPicksRoute
   '/props': typeof AppPropsRoute
+  '/research': typeof AppResearchRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/parlay': typeof AppParlayRoute
   '/picks': typeof AppPicksRoute
   '/props': typeof AppPropsRoute
+  '/research': typeof AppResearchRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/_app/parlay': typeof AppParlayRoute
   '/_app/picks': typeof AppPicksRoute
   '/_app/props': typeof AppPropsRoute
+  '/_app/research': typeof AppResearchRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/parlay'
     | '/picks'
     | '/props'
+    | '/research'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/parlay'
     | '/picks'
     | '/props'
+    | '/research'
   id:
     | '__root__'
     | '/'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/_app/parlay'
     | '/_app/picks'
     | '/_app/props'
+    | '/_app/research'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -150,6 +162,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_app/research': {
+      id: '/_app/research'
+      path: '/research'
+      fullPath: '/research'
+      preLoaderRoute: typeof AppResearchRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_app/props': {
       id: '/_app/props'
@@ -211,6 +230,7 @@ interface AppRouteChildren {
   AppParlayRoute: typeof AppParlayRoute
   AppPicksRoute: typeof AppPicksRoute
   AppPropsRoute: typeof AppPropsRoute
+  AppResearchRoute: typeof AppResearchRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -221,6 +241,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppParlayRoute: AppParlayRoute,
   AppPicksRoute: AppPicksRoute,
   AppPropsRoute: AppPropsRoute,
+  AppResearchRoute: AppResearchRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
