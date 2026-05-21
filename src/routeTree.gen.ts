@@ -9,38 +9,233 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppSavedRouteImport } from './routes/_app/saved'
+import { Route as AppResearchRouteImport } from './routes/_app/research'
+import { Route as AppPropsRouteImport } from './routes/_app/props'
+import { Route as AppPricingRouteImport } from './routes/_app/pricing'
+import { Route as AppPicksRouteImport } from './routes/_app/picks'
+import { Route as AppParlayRouteImport } from './routes/_app/parlay'
+import { Route as AppMovementRouteImport } from './routes/_app/movement'
+import { Route as AppLinesRouteImport } from './routes/_app/lines'
+import { Route as AppLeaderboardRouteImport } from './routes/_app/leaderboard'
+import { Route as AppInjuriesRouteImport } from './routes/_app/injuries'
+import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppAiRouteImport } from './routes/_app/ai'
+import { Route as AppAdminRouteImport } from './routes/_app/admin'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppSavedRoute = AppSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppResearchRoute = AppResearchRouteImport.update({
+  id: '/research',
+  path: '/research',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPropsRoute = AppPropsRouteImport.update({
+  id: '/props',
+  path: '/props',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPricingRoute = AppPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPicksRoute = AppPicksRouteImport.update({
+  id: '/picks',
+  path: '/picks',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppParlayRoute = AppParlayRouteImport.update({
+  id: '/parlay',
+  path: '/parlay',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMovementRoute = AppMovementRouteImport.update({
+  id: '/movement',
+  path: '/movement',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLinesRoute = AppLinesRouteImport.update({
+  id: '/lines',
+  path: '/lines',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLeaderboardRoute = AppLeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppInjuriesRoute = AppInjuriesRouteImport.update({
+  id: '/injuries',
+  path: '/injuries',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAiRoute = AppAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/admin': typeof AppAdminRoute
+  '/ai': typeof AppAiRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/injuries': typeof AppInjuriesRoute
+  '/leaderboard': typeof AppLeaderboardRoute
+  '/lines': typeof AppLinesRoute
+  '/movement': typeof AppMovementRoute
+  '/parlay': typeof AppParlayRoute
+  '/picks': typeof AppPicksRoute
+  '/pricing': typeof AppPricingRoute
+  '/props': typeof AppPropsRoute
+  '/research': typeof AppResearchRoute
+  '/saved': typeof AppSavedRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/admin': typeof AppAdminRoute
+  '/ai': typeof AppAiRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/injuries': typeof AppInjuriesRoute
+  '/leaderboard': typeof AppLeaderboardRoute
+  '/lines': typeof AppLinesRoute
+  '/movement': typeof AppMovementRoute
+  '/parlay': typeof AppParlayRoute
+  '/picks': typeof AppPicksRoute
+  '/pricing': typeof AppPricingRoute
+  '/props': typeof AppPropsRoute
+  '/research': typeof AppResearchRoute
+  '/saved': typeof AppSavedRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_app/admin': typeof AppAdminRoute
+  '/_app/ai': typeof AppAiRoute
+  '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/injuries': typeof AppInjuriesRoute
+  '/_app/leaderboard': typeof AppLeaderboardRoute
+  '/_app/lines': typeof AppLinesRoute
+  '/_app/movement': typeof AppMovementRoute
+  '/_app/parlay': typeof AppParlayRoute
+  '/_app/picks': typeof AppPicksRoute
+  '/_app/pricing': typeof AppPricingRoute
+  '/_app/props': typeof AppPropsRoute
+  '/_app/research': typeof AppResearchRoute
+  '/_app/saved': typeof AppSavedRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/admin'
+    | '/ai'
+    | '/dashboard'
+    | '/injuries'
+    | '/leaderboard'
+    | '/lines'
+    | '/movement'
+    | '/parlay'
+    | '/picks'
+    | '/pricing'
+    | '/props'
+    | '/research'
+    | '/saved'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/admin'
+    | '/ai'
+    | '/dashboard'
+    | '/injuries'
+    | '/leaderboard'
+    | '/lines'
+    | '/movement'
+    | '/parlay'
+    | '/picks'
+    | '/pricing'
+    | '/props'
+    | '/research'
+    | '/saved'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/login'
+    | '/_app/admin'
+    | '/_app/ai'
+    | '/_app/dashboard'
+    | '/_app/injuries'
+    | '/_app/leaderboard'
+    | '/_app/lines'
+    | '/_app/movement'
+    | '/_app/parlay'
+    | '/_app/picks'
+    | '/_app/pricing'
+    | '/_app/props'
+    | '/_app/research'
+    | '/_app/saved'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +243,139 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/saved': {
+      id: '/_app/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof AppSavedRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/research': {
+      id: '/_app/research'
+      path: '/research'
+      fullPath: '/research'
+      preLoaderRoute: typeof AppResearchRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/props': {
+      id: '/_app/props'
+      path: '/props'
+      fullPath: '/props'
+      preLoaderRoute: typeof AppPropsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/pricing': {
+      id: '/_app/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof AppPricingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/picks': {
+      id: '/_app/picks'
+      path: '/picks'
+      fullPath: '/picks'
+      preLoaderRoute: typeof AppPicksRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/parlay': {
+      id: '/_app/parlay'
+      path: '/parlay'
+      fullPath: '/parlay'
+      preLoaderRoute: typeof AppParlayRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/movement': {
+      id: '/_app/movement'
+      path: '/movement'
+      fullPath: '/movement'
+      preLoaderRoute: typeof AppMovementRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/lines': {
+      id: '/_app/lines'
+      path: '/lines'
+      fullPath: '/lines'
+      preLoaderRoute: typeof AppLinesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/leaderboard': {
+      id: '/_app/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof AppLeaderboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/injuries': {
+      id: '/_app/injuries'
+      path: '/injuries'
+      fullPath: '/injuries'
+      preLoaderRoute: typeof AppInjuriesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/ai': {
+      id: '/_app/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof AppAiRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/admin': {
+      id: '/_app/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
+  AppAiRoute: typeof AppAiRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppInjuriesRoute: typeof AppInjuriesRoute
+  AppLeaderboardRoute: typeof AppLeaderboardRoute
+  AppLinesRoute: typeof AppLinesRoute
+  AppMovementRoute: typeof AppMovementRoute
+  AppParlayRoute: typeof AppParlayRoute
+  AppPicksRoute: typeof AppPicksRoute
+  AppPricingRoute: typeof AppPricingRoute
+  AppPropsRoute: typeof AppPropsRoute
+  AppResearchRoute: typeof AppResearchRoute
+  AppSavedRoute: typeof AppSavedRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
+  AppAiRoute: AppAiRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppInjuriesRoute: AppInjuriesRoute,
+  AppLeaderboardRoute: AppLeaderboardRoute,
+  AppLinesRoute: AppLinesRoute,
+  AppMovementRoute: AppMovementRoute,
+  AppParlayRoute: AppParlayRoute,
+  AppPicksRoute: AppPicksRoute,
+  AppPricingRoute: AppPricingRoute,
+  AppPropsRoute: AppPropsRoute,
+  AppResearchRoute: AppResearchRoute,
+  AppSavedRoute: AppSavedRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
