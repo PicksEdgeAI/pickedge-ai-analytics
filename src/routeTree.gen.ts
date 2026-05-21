@@ -17,6 +17,7 @@ import { Route as AppPicksRouteImport } from './routes/_app/picks'
 import { Route as AppParlayRouteImport } from './routes/_app/parlay'
 import { Route as AppMovementRouteImport } from './routes/_app/movement'
 import { Route as AppLinesRouteImport } from './routes/_app/lines'
+import { Route as AppLeaderboardRouteImport } from './routes/_app/leaderboard'
 import { Route as AppInjuriesRouteImport } from './routes/_app/injuries'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppAiRouteImport } from './routes/_app/ai'
@@ -60,6 +61,11 @@ const AppLinesRoute = AppLinesRouteImport.update({
   path: '/lines',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLeaderboardRoute = AppLeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppInjuriesRoute = AppInjuriesRouteImport.update({
   id: '/injuries',
   path: '/injuries',
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/ai': typeof AppAiRoute
   '/dashboard': typeof AppDashboardRoute
   '/injuries': typeof AppInjuriesRoute
+  '/leaderboard': typeof AppLeaderboardRoute
   '/lines': typeof AppLinesRoute
   '/movement': typeof AppMovementRoute
   '/parlay': typeof AppParlayRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/ai': typeof AppAiRoute
   '/dashboard': typeof AppDashboardRoute
   '/injuries': typeof AppInjuriesRoute
+  '/leaderboard': typeof AppLeaderboardRoute
   '/lines': typeof AppLinesRoute
   '/movement': typeof AppMovementRoute
   '/parlay': typeof AppParlayRoute
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   '/_app/ai': typeof AppAiRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/injuries': typeof AppInjuriesRoute
+  '/_app/leaderboard': typeof AppLeaderboardRoute
   '/_app/lines': typeof AppLinesRoute
   '/_app/movement': typeof AppMovementRoute
   '/_app/parlay': typeof AppParlayRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/dashboard'
     | '/injuries'
+    | '/leaderboard'
     | '/lines'
     | '/movement'
     | '/parlay'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/dashboard'
     | '/injuries'
+    | '/leaderboard'
     | '/lines'
     | '/movement'
     | '/parlay'
@@ -146,6 +157,7 @@ export interface FileRouteTypes {
     | '/_app/ai'
     | '/_app/dashboard'
     | '/_app/injuries'
+    | '/_app/leaderboard'
     | '/_app/lines'
     | '/_app/movement'
     | '/_app/parlay'
@@ -217,6 +229,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLinesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/leaderboard': {
+      id: '/_app/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof AppLeaderboardRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/injuries': {
       id: '/_app/injuries'
       path: '/injuries'
@@ -245,6 +264,7 @@ interface AppRouteChildren {
   AppAiRoute: typeof AppAiRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppInjuriesRoute: typeof AppInjuriesRoute
+  AppLeaderboardRoute: typeof AppLeaderboardRoute
   AppLinesRoute: typeof AppLinesRoute
   AppMovementRoute: typeof AppMovementRoute
   AppParlayRoute: typeof AppParlayRoute
@@ -257,6 +277,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAiRoute: AppAiRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppInjuriesRoute: AppInjuriesRoute,
+  AppLeaderboardRoute: AppLeaderboardRoute,
   AppLinesRoute: AppLinesRoute,
   AppMovementRoute: AppMovementRoute,
   AppParlayRoute: AppParlayRoute,
