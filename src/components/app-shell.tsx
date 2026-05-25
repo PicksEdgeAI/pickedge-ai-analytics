@@ -6,6 +6,7 @@ import {
 import { useState, type ReactNode } from "react";
 import { SlipDrawer } from "./slip-drawer";
 import { SlipProvider } from "@/lib/slip-store";
+import { useAuth } from "@/hooks/use-auth";
 
 const nav: { to: LinkProps["to"]; label: string; icon: typeof Target; tier?: string }[] = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -76,12 +77,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Bell className="h-5 w-5" />
               <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_var(--primary)]" />
             </button>
-            <Link
-              to="/login"
-              className="hidden sm:inline-flex items-center h-9 px-4 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90"
-            >
-              Sign in
-            </Link>
+            <AuthButton />
           </header>
 
           <main className="flex-1 p-4 lg:p-6 pb-32 lg:pb-6">{children}</main>
@@ -90,6 +86,32 @@ export function AppShell({ children }: { children: ReactNode }) {
         <SlipDrawer />
       </div>
     </SlipProvider>
+  );
+}
+
+function AuthButton() {
+  const { user, loading, signOut } = useAuth();
+  if (loading) return null;
+  if (user) {
+    return (
+      <div className="hidden sm:flex items-center gap-2">
+        <span className="text-xs text-muted-foreground max-w-[140px] truncate">{user.email}</span>
+        <button
+          onClick={() => signOut()}
+          className="inline-flex items-center h-9 px-3 rounded-md border border-border bg-secondary/60 text-sm font-semibold hover:bg-secondary"
+        >
+          Sign out
+        </button>
+      </div>
+    );
+  }
+  return (
+    <Link
+      to="/login"
+      className="hidden sm:inline-flex items-center h-9 px-4 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90"
+    >
+      Sign in
+    </Link>
   );
 }
 
