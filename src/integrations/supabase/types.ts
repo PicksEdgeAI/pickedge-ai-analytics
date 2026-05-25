@@ -14,16 +14,381 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_picks: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          game_id: string | null
+          grade: string | null
+          id: string
+          odds: number | null
+          pick_label: string
+          pick_type: string
+          reasoning: string | null
+          result: Database["public"]["Enums"]["pick_result"]
+          sport: string | null
+          updated_at: string
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          game_id?: string | null
+          grade?: string | null
+          id?: string
+          odds?: number | null
+          pick_label: string
+          pick_type: string
+          reasoning?: string | null
+          result?: Database["public"]["Enums"]["pick_result"]
+          sport?: string | null
+          updated_at?: string
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          game_id?: string | null
+          grade?: string | null
+          id?: string
+          odds?: number | null
+          pick_label?: string
+          pick_type?: string
+          reasoning?: string | null
+          result?: Database["public"]["Enums"]["pick_result"]
+          sport?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_picks_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      games: {
+        Row: {
+          away_score: number | null
+          away_team: string
+          commence_time: string
+          created_at: string
+          home_score: number | null
+          home_team: string
+          id: string
+          league: string | null
+          odds_api_id: string | null
+          sport: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          away_score?: number | null
+          away_team: string
+          commence_time: string
+          created_at?: string
+          home_score?: number | null
+          home_team: string
+          id?: string
+          league?: string | null
+          odds_api_id?: string | null
+          sport: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          away_score?: number | null
+          away_team?: string
+          commence_time?: string
+          created_at?: string
+          home_score?: number | null
+          home_team?: string
+          id?: string
+          league?: string | null
+          odds_api_id?: string | null
+          sport?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      injuries: {
+        Row: {
+          ai_impact: string | null
+          description: string | null
+          id: string
+          league: string | null
+          player_name: string
+          reported_at: string
+          status: string
+          team: string | null
+        }
+        Insert: {
+          ai_impact?: string | null
+          description?: string | null
+          id?: string
+          league?: string | null
+          player_name: string
+          reported_at?: string
+          status: string
+          team?: string | null
+        }
+        Update: {
+          ai_impact?: string | null
+          description?: string | null
+          id?: string
+          league?: string | null
+          player_name?: string
+          reported_at?: string
+          status?: string
+          team?: string | null
+        }
+        Relationships: []
+      }
+      odds: {
+        Row: {
+          bookmaker: string
+          game_id: string
+          id: string
+          last_update: string
+          market: string
+          outcome_name: string
+          point: number | null
+          price: number
+        }
+        Insert: {
+          bookmaker: string
+          game_id: string
+          id?: string
+          last_update?: string
+          market: string
+          outcome_name: string
+          point?: number | null
+          price: number
+        }
+        Update: {
+          bookmaker?: string
+          game_id?: string
+          id?: string
+          last_update?: string
+          market?: string
+          outcome_name?: string
+          point?: number | null
+          price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "odds_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      parlays: {
+        Row: {
+          ai_grade: string | null
+          created_at: string
+          id: string
+          legs: Json
+          status: Database["public"]["Enums"]["pick_result"]
+          total_odds: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_grade?: string | null
+          created_at?: string
+          id?: string
+          legs: Json
+          status?: Database["public"]["Enums"]["pick_result"]
+          total_odds?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_grade?: string | null
+          created_at?: string
+          id?: string
+          legs?: Json
+          status?: Database["public"]["Enums"]["pick_result"]
+          total_odds?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      player_props: {
+        Row: {
+          ai_grade: string | null
+          created_at: string
+          game_id: string | null
+          hit_rate_l10: number | null
+          hit_rate_l20: number | null
+          hit_rate_l5: number | null
+          id: string
+          line: number
+          over_price: number | null
+          player_name: string
+          prop_type: string
+          team: string | null
+          under_price: number | null
+          updated_at: string
+        }
+        Insert: {
+          ai_grade?: string | null
+          created_at?: string
+          game_id?: string | null
+          hit_rate_l10?: number | null
+          hit_rate_l20?: number | null
+          hit_rate_l5?: number | null
+          id?: string
+          line: number
+          over_price?: number | null
+          player_name: string
+          prop_type: string
+          team?: string | null
+          under_price?: number | null
+          updated_at?: string
+        }
+        Update: {
+          ai_grade?: string | null
+          created_at?: string
+          game_id?: string | null
+          hit_rate_l10?: number | null
+          hit_rate_l20?: number | null
+          hit_rate_l5?: number | null
+          id?: string
+          line?: number
+          over_price?: number | null
+          player_name?: string
+          prop_type?: string
+          team?: string | null
+          under_price?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "player_props_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          plan: Database["public"]["Enums"]["app_plan"]
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          subscription_status: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id: string
+          plan?: Database["public"]["Enums"]["app_plan"]
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subscription_status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          plan?: Database["public"]["Enums"]["app_plan"]
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subscription_status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      saved_picks: {
+        Row: {
+          ai_pick_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          user_id: string
+        }
+        Insert: {
+          ai_pick_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          user_id: string
+        }
+        Update: {
+          ai_pick_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_picks_ai_pick_id_fkey"
+            columns: ["ai_pick_id"]
+            isOneToOne: false
+            referencedRelation: "ai_picks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      leaderboard_stats: {
+        Row: {
+          display_name: string | null
+          losses: number | null
+          pushes: number | null
+          total_picks: number | null
+          user_id: string | null
+          win_pct: number | null
+          wins: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_plan: "free" | "pro" | "vip"
+      app_role: "admin" | "user"
+      pick_result: "pending" | "won" | "lost" | "push" | "void"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +515,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_plan: ["free", "pro", "vip"],
+      app_role: ["admin", "user"],
+      pick_result: ["pending", "won", "lost", "push", "void"],
+    },
   },
 } as const

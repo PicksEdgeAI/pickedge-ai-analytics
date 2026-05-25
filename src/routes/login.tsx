@@ -1,4 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/login")({
   head: () => ({ meta: [{ title: "Sign in · PickEdge AI" }] }),
@@ -6,6 +9,42 @@ export const Route = createFileRoute("/login")({
 });
 
 function Login() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [err, setErr] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) navigate({ to: "/dashboard" });
+  }, [user, navigate]);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setErr(null);
+    setLoading(true);
+    try {
+      if (mode === "signup") {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: `${window.location.origin}/dashboard` },
+        });
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+      }
+      navigate({ to: "/dashboard" });
+    } catch (e: any) {
+      setErr(e.message ?? "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-6">
       <div className="w-full max-w-md rounded-2xl border border-border p-8" style={{ background: "var(--gradient-surface)" }}>
@@ -14,23 +53,39 @@ function Login() {
             style={{ background: "var(--gradient-primary)", boxShadow: "var(--glow-primary)" }}>P</div>
           <span className="font-bold tracking-tight text-lg">PickEdge<span className="text-primary"> AI</span></span>
         </Link>
-        <h1 className="text-2xl font-bold">Welcome back</h1>
-        <p className="text-sm text-muted-foreground mt-1">Sign in to track your picks and unlock AI insights.</p>
+        <h1 className="text-2xl font-bold">{mode === "signin" ? "Welcome back" : "Create your account"}</h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          {mode === "signin" ? "Sign in to track picks and unlock AI insights." : "Free to start. No credit card required."}
+        </p>
 
-        <button className="mt-6 w-full h-11 rounded-md border border-border bg-secondary/60 font-semibold flex items-center justify-center gap-2 hover:bg-secondary">
-          <span>Continue with Google</span>
-        </button>
-        <div className="my-4 flex items-center gap-3 text-xs text-muted-foreground">
-          <div className="flex-1 h-px bg-border" /> OR <div className="flex-1 h-px bg-border" />
-        </div>
-        <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
-          <input type="email" placeholder="Email" className="w-full h-11 px-3 rounded-md bg-secondary border border-border text-sm" />
-          <input type="password" placeholder="Password" className="w-full h-11 px-3 rounded-md bg-secondary border border-border text-sm" />
-          <Link to="/dashboard" className="w-full inline-flex items-center justify-center h-11 rounded-md text-primary-foreground font-semibold"
-            style={{ background: "var(--gradient-primary)" }}>
-            Sign in
-          </Link>
+        <form className="space-y-3 mt-6" onSubmit={handleSubmit}>
+          <input
+            type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            className="w-full h-11 px-3 rounded-md bg-secondary border border-border text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+          <input
+            type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password (min 6 characters)"
+            className="w-full h-11 px-3 rounded-md bg-secondary border border-border text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+          {err && <div className="text-sm text-destructive">{err}</div>}
+          <button
+            type="submit" disabled={loading}
+            className="w-full inline-flex items-center justify-center h-11 rounded-md text-primary-foreground font-semibold disabled:opacity-60"
+            style={{ background: "var(--gradient-primary)" }}
+          >
+            {loading ? "Working…" : mode === "signin" ? "Sign in" : "Create account"}
+          </button>
         </form>
+
+        <button
+          onClick={() => { setErr(null); setMode(mode === "signin" ? "signup" : "signin"); }}
+          className="mt-4 w-full text-sm text-muted-foreground hover:text-foreground"
+        >
+          {mode === "signin" ? "New here? Create an account" : "Already have an account? Sign in"}
+        </button>
+
         <p className="text-xs text-muted-foreground text-center mt-4">
           By continuing you agree to our terms. Research only. Not a sportsbook.
         </p>
