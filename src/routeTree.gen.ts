@@ -27,6 +27,7 @@ import { Route as AppAiRouteImport } from './routes/_app/ai'
 import { Route as AppAdminRouteImport } from './routes/_app/admin'
 import { Route as ApiPublicCronSyncPropsRouteImport } from './routes/api/public/cron/sync-props'
 import { Route as ApiPublicCronSyncOddsRouteImport } from './routes/api/public/cron/sync-odds'
+import { Route as ApiPublicCronSyncInjuriesRouteImport } from './routes/api/public/cron/sync-injuries'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -117,6 +118,12 @@ const ApiPublicCronSyncOddsRoute = ApiPublicCronSyncOddsRouteImport.update({
   path: '/api/public/cron/sync-odds',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicCronSyncInjuriesRoute =
+  ApiPublicCronSyncInjuriesRouteImport.update({
+    id: '/api/public/cron/sync-injuries',
+    path: '/api/public/cron/sync-injuries',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -134,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/props': typeof AppPropsRoute
   '/research': typeof AppResearchRoute
   '/saved': typeof AppSavedRoute
+  '/api/public/cron/sync-injuries': typeof ApiPublicCronSyncInjuriesRoute
   '/api/public/cron/sync-odds': typeof ApiPublicCronSyncOddsRoute
   '/api/public/cron/sync-props': typeof ApiPublicCronSyncPropsRoute
 }
@@ -153,6 +161,7 @@ export interface FileRoutesByTo {
   '/props': typeof AppPropsRoute
   '/research': typeof AppResearchRoute
   '/saved': typeof AppSavedRoute
+  '/api/public/cron/sync-injuries': typeof ApiPublicCronSyncInjuriesRoute
   '/api/public/cron/sync-odds': typeof ApiPublicCronSyncOddsRoute
   '/api/public/cron/sync-props': typeof ApiPublicCronSyncPropsRoute
 }
@@ -174,6 +183,7 @@ export interface FileRoutesById {
   '/_app/props': typeof AppPropsRoute
   '/_app/research': typeof AppResearchRoute
   '/_app/saved': typeof AppSavedRoute
+  '/api/public/cron/sync-injuries': typeof ApiPublicCronSyncInjuriesRoute
   '/api/public/cron/sync-odds': typeof ApiPublicCronSyncOddsRoute
   '/api/public/cron/sync-props': typeof ApiPublicCronSyncPropsRoute
 }
@@ -195,6 +205,7 @@ export interface FileRouteTypes {
     | '/props'
     | '/research'
     | '/saved'
+    | '/api/public/cron/sync-injuries'
     | '/api/public/cron/sync-odds'
     | '/api/public/cron/sync-props'
   fileRoutesByTo: FileRoutesByTo
@@ -214,6 +225,7 @@ export interface FileRouteTypes {
     | '/props'
     | '/research'
     | '/saved'
+    | '/api/public/cron/sync-injuries'
     | '/api/public/cron/sync-odds'
     | '/api/public/cron/sync-props'
   id:
@@ -234,6 +246,7 @@ export interface FileRouteTypes {
     | '/_app/props'
     | '/_app/research'
     | '/_app/saved'
+    | '/api/public/cron/sync-injuries'
     | '/api/public/cron/sync-odds'
     | '/api/public/cron/sync-props'
   fileRoutesById: FileRoutesById
@@ -242,6 +255,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   LoginRoute: typeof LoginRoute
+  ApiPublicCronSyncInjuriesRoute: typeof ApiPublicCronSyncInjuriesRoute
   ApiPublicCronSyncOddsRoute: typeof ApiPublicCronSyncOddsRoute
   ApiPublicCronSyncPropsRoute: typeof ApiPublicCronSyncPropsRoute
 }
@@ -374,6 +388,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicCronSyncOddsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/cron/sync-injuries': {
+      id: '/api/public/cron/sync-injuries'
+      path: '/api/public/cron/sync-injuries'
+      fullPath: '/api/public/cron/sync-injuries'
+      preLoaderRoute: typeof ApiPublicCronSyncInjuriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -415,6 +436,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   LoginRoute: LoginRoute,
+  ApiPublicCronSyncInjuriesRoute: ApiPublicCronSyncInjuriesRoute,
   ApiPublicCronSyncOddsRoute: ApiPublicCronSyncOddsRoute,
   ApiPublicCronSyncPropsRoute: ApiPublicCronSyncPropsRoute,
 }
