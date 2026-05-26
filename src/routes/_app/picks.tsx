@@ -1,9 +1,24 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
 import { Card, PageHeader, Pill, OddsButton, Disclaimer } from "@/components/ui-bits";
 import { mockGames, type League } from "@/lib/mock-data";
 import { useSlip } from "@/lib/slip-store";
-import { Calendar } from "lucide-react";
+import { Calendar, Bookmark } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { savePick } from "@/lib/save-pick.functions";
+
+type SaveInput = {
+  pick_type: string;
+  pick_label: string;
+  sport?: string;
+  odds?: number;
+  confidence?: number;
+  grade?: string;
+  reasoning?: string;
+};
 
 const LEAGUES: ("ALL" | League)[] = ["ALL", "NBA", "NFL", "MLB", "NHL", "UFC", "Soccer", "WNBA", "NCAAF", "NCAAB"];
 
@@ -15,6 +30,18 @@ export const Route = createFileRoute("/_app/picks")({
 function Picks() {
   const [lg, setLg] = useState<"ALL" | League>("ALL");
   const { add } = useSlip();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const saveFn = useServerFn(savePick);
+  const saveMut = useMutation({
+    mutationFn: (input: SaveInput) => saveFn({ data: input }),
+    onSuccess: () => toast.success("Saved to your picks"),
+    onError: (e: Error) => toast.error(e.message ?? "Failed to save"),
+  });
+  const handleSave = (input: SaveInput) => {
+    if (!user) { navigate({ to: "/login" }); return; }
+    saveMut.mutate(input);
+  };
   const games = mockGames.filter((g) => lg === "ALL" || g.league === lg);
 
   return (
@@ -79,6 +106,24 @@ function Picks() {
                 <OddsButton label={`U ${g.total.line}`} odds={g.total.under}
                   onClick={() => add({ id: `${g.id}-tu`, label: `Under ${g.total.line}`, detail: `${g.away} @ ${g.home}`, odds: g.total.under })} />
               </Market>
+            </div>
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button onClick={() => handleSave({ pick_type: "spread", pick_label: `${g.home} ${g.spread.home > 0 ? "+" : ""}${g.spread.home} vs ${g.away}`, sport: g.league, odds: -110 })}
+                className="inline-flex items-center gap-1.5 h-8 px-3 rounded-md border border-border bg-secondary/60 text-xs font-semibold hover:bg-secondary disabled:opacity-60"
+                disabled={saveMut.isPending}>
+                <Bookmark className="h-3.5 w-3.5" /> Save spread
+              </button>
+              <button onClick={() => handleSave({ pick_type: "moneyline", pick_label: `${g.home} ML vs ${g.away}`, sport: g.league, odds: g.moneyline.home })}
+                className="inline-flex items-center gap-1.5 h-8 px-3 rounded-md border border-border bg-secondary/60 text-xs font-semibold hover:bg-secondary disabled:opacity-60"
+                disabled={saveMut.isPending}>
+                <Bookmark className="h-3.5 w-3.5" /> Save ML
+              </button>
+              <button onClick={() => handleSave({ pick_type: "total", pick_label: `${g.away} @ ${g.home} Over ${g.total.line}`, sport: g.league, odds: g.total.over })}
+                className="inline-flex items-center gap-1.5 h-8 px-3 rounded-md border border-border bg-secondary/60 text-xs font-semibold hover:bg-secondary disabled:opacity-60"
+                disabled={saveMut.isPending}>
+                <Bookmark className="h-3.5 w-3.5" /> Save total
+              </button>
             </div>
           </Card>
         ))}
