@@ -10,6 +10,16 @@ import { Calendar, Bookmark } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { savePick } from "@/lib/save-pick.functions";
 
+type SaveInput = {
+  pick_type: string;
+  pick_label: string;
+  sport?: string;
+  odds?: number;
+  confidence?: number;
+  grade?: string;
+  reasoning?: string;
+};
+
 const LEAGUES: ("ALL" | League)[] = ["ALL", "NBA", "NFL", "MLB", "NHL", "UFC", "Soccer", "WNBA", "NCAAF", "NCAAB"];
 
 export const Route = createFileRoute("/_app/picks")({
@@ -24,11 +34,11 @@ function Picks() {
   const navigate = useNavigate();
   const saveFn = useServerFn(savePick);
   const saveMut = useMutation({
-    mutationFn: (input: Parameters<typeof saveFn>[0]["data"]) => saveFn({ data: input }),
+    mutationFn: (input: SaveInput) => saveFn({ data: input }),
     onSuccess: () => toast.success("Saved to your picks"),
     onError: (e: Error) => toast.error(e.message ?? "Failed to save"),
   });
-  const handleSave = (input: Parameters<typeof saveFn>[0]["data"]) => {
+  const handleSave = (input: SaveInput) => {
     if (!user) { navigate({ to: "/login" }); return; }
     saveMut.mutate(input);
   };
