@@ -25,6 +25,7 @@ import { Route as AppInjuriesRouteImport } from './routes/_app/injuries'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppAiRouteImport } from './routes/_app/ai'
 import { Route as AppAdminRouteImport } from './routes/_app/admin'
+import { Route as ApiPublicCronSyncOddsRouteImport } from './routes/api/public/cron/sync-odds'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -105,6 +106,11 @@ const AppAdminRoute = AppAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AppRoute,
 } as any)
+const ApiPublicCronSyncOddsRoute = ApiPublicCronSyncOddsRouteImport.update({
+  id: '/api/public/cron/sync-odds',
+  path: '/api/public/cron/sync-odds',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/props': typeof AppPropsRoute
   '/research': typeof AppResearchRoute
   '/saved': typeof AppSavedRoute
+  '/api/public/cron/sync-odds': typeof ApiPublicCronSyncOddsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -139,6 +146,7 @@ export interface FileRoutesByTo {
   '/props': typeof AppPropsRoute
   '/research': typeof AppResearchRoute
   '/saved': typeof AppSavedRoute
+  '/api/public/cron/sync-odds': typeof ApiPublicCronSyncOddsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -158,6 +166,7 @@ export interface FileRoutesById {
   '/_app/props': typeof AppPropsRoute
   '/_app/research': typeof AppResearchRoute
   '/_app/saved': typeof AppSavedRoute
+  '/api/public/cron/sync-odds': typeof ApiPublicCronSyncOddsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -177,6 +186,7 @@ export interface FileRouteTypes {
     | '/props'
     | '/research'
     | '/saved'
+    | '/api/public/cron/sync-odds'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
     | '/props'
     | '/research'
     | '/saved'
+    | '/api/public/cron/sync-odds'
   id:
     | '__root__'
     | '/'
@@ -212,12 +223,14 @@ export interface FileRouteTypes {
     | '/_app/props'
     | '/_app/research'
     | '/_app/saved'
+    | '/api/public/cron/sync-odds'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   LoginRoute: typeof LoginRoute
+  ApiPublicCronSyncOddsRoute: typeof ApiPublicCronSyncOddsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -334,6 +347,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminRouteImport
       parentRoute: typeof AppRoute
     }
+    '/api/public/cron/sync-odds': {
+      id: '/api/public/cron/sync-odds'
+      path: '/api/public/cron/sync-odds'
+      fullPath: '/api/public/cron/sync-odds'
+      preLoaderRoute: typeof ApiPublicCronSyncOddsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -375,7 +395,18 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   LoginRoute: LoginRoute,
+  ApiPublicCronSyncOddsRoute: ApiPublicCronSyncOddsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
