@@ -13,6 +13,14 @@ import type { Plugin } from "vite";
 // that wrangler/Cloudflare will load actually exists. Catches drift between
 // tanstackStart.server.entry and the emitted dist/ layout before deploy.
 const EXPECTED_SERVER_ENTRY = "dist/server/server.js";
+const SERVER_RUNTIME_NO_EXTERNAL = [
+  "h3-v2",
+  "h3",
+  "rou3",
+  "srvx",
+  "@tanstack/start-server-core",
+  "@tanstack/react-start-server",
+];
 
 function validateServerEntry(): Plugin {
   return {
@@ -46,7 +54,17 @@ export default defineConfig({
   },
   vite: {
     resolve: {
-      noExternal: ["h3-v2", "h3", "@tanstack/start-server-core", "@tanstack/react-start-server"],
+      // These are imported by the server entry during Worker startup. If Vite
+      // leaves them as bare runtime imports, the deployed Worker crashes with
+      // errors like: No such module "h3-v2" imported from "server.js".
+      noExternal: SERVER_RUNTIME_NO_EXTERNAL,
+    },
+    environments: {
+      ssr: {
+        resolve: {
+          noExternal: SERVER_RUNTIME_NO_EXTERNAL,
+        },
+      },
     },
     plugins: [validateServerEntry()],
   },
