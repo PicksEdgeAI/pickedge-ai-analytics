@@ -45,6 +45,9 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
+    resolve: {
+      noExternal: ["h3-v2", "h3", "@tanstack/start-server-core", "@tanstack/react-start-server"],
+    },
     plugins: [validateServerEntry()],
   },
 });
